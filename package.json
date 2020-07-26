@@ -1,0 +1,21 @@
+{
+  "name": "jep-game",
+  "version": "1.0.0",
+  "description": "A realtime jeopardy game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "author": "Andrew Nemec",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
+    "node-fetch": "^2.6.0",
+    "socketio": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
