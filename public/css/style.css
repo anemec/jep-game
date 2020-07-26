@@ -1,15 +1,18 @@
 .question-box {
-
+    margin-left: 20px;
 }
 
 .question {
     height: 50px;
     width: 50px;
-    margin-left: 20px;
     margin-bottom: 30px;
     background-color: lightblue;
-    padding: 3px;
     text-align: center;
+}
+
+.answerTextShow {
+    margin-bottom: 5px;
+    border-bottom: 1px lightgray solid;
 }
 
 .answer {
@@ -18,4 +21,10 @@
 
 .newQ {
     margin-top: 20px;
+}
+
+.answerText,
+.answerSubmit,
+.answerNP {
+    display: none;
 }
