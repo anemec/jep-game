@@ -1,0 +1,21 @@
+.question-box {
+
+}
+
+.question {
+    height: 50px;
+    width: 50px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    background-color: lightblue;
+    padding: 3px;
+    text-align: center;
+}
+
+.answer {
+    margin-left: 20px;
+}
+
+.newQ {
+    margin-top: 20px;
+}
