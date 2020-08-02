@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
+
 <body>
-    <h1 id ="test">Jeopardy game</h1>
+    <h1 id="test">Jeopardy game</h1>
     <div class="question-box">
-        <div id="question1" class="question">100</div>
-        <div id="answer1" class="answerTextShow"></div>
-        <div id="question2" class="question">200</div>
-        <div id="answer2" class="answerTextShow"></div>
-        <div id="question3" class="question">400</div>
-        <div id="answer3" class="answerTextShow"></div>
-        <div id="question4" class="question">800</div>
-        <div id="answer4" class="answerTextShow"></div>
-        <div id="question5" class="question">1000</div>
-        <div id="answer5" class="answerTextShow"></div>
+        <div class="question-div">
+            <div id="question1" class="question">100</div>
+            <div id="answer1" class="answerTextShow"></div>
+        </div>
+        <div class="question-div">
+            <div id="question2" class="question">200</div>
+            <div id="answer2" class="answerTextShow"></div>
+        </div>
+        <div class="question-div">
+            <div id="question3" class="question">400</div>
+            <div id="answer3" class="answerTextShow"></div>
+        </div>
+        <div class="question-div">
+            <div id="question4" class="question">800</div>
+            <div id="answer4" class="answerTextShow"></div>
+        </div>
+        <div class="question-div">
+            <div id="question5" class="question">1000</div>
+            <div id="answer5" class="answerTextShow"></div>
+        </div>
     </div>
     <button id="answer" class="answer">Answer</button>
     <div>
@@ -28,10 +40,11 @@
     </div>
     <br>
     <button id="newQ" class="newQ">Click me for new questions</button>
-    
+
 </body>
 
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/main.js"></script>
+
 </html>

@@ -1,10 +1,5 @@
-const testElem = document.getElementById('test');
 const questionBtn = document.getElementById('newQ');
-const questionOne = document.getElementById('question1');
-const questionTwo = document.getElementById('question2');
-const questionThree = document.getElementById('question3');
-const questionFour = document.getElementById('question4');
-const questionFive = document.getElementById('question5');
+const questions = document.querySelectorAll('.question-div');
 const answerBtn = document.getElementById('answer');
 const answerText = document.getElementById('ansText');
 const answerSubmit = document.getElementById('answerSubmit');
@@ -15,35 +10,14 @@ const socket = io();
 let questionsArr = [];
 // let questionsArr = ["This is an answer one", "This is an answer two", "This is an answer three", "This is an answer four", "This is an answer five"];
 
-// Question buttons
-questionOne.addEventListener('click', () => {
-    const ans = document.getElementById("answer1");
-    ans.innerText = questionsArr[0].question;
-    sendQuestion(ans.id, 0);
-});
+function handleQuestion(item, index) {
+    sendQuestion(item.id, index);
+}
 
-questionTwo.addEventListener('click', () => {
-    const ans = document.getElementById("answer2");
-    ans.innerText = questionsArr[1].question;
-    sendQuestion(ans.id, 1);
-});
-
-questionThree.addEventListener('click', () => {
-    const ans = document.getElementById("answer3");
-    ans.innerText = questionsArr[2].question;
-    sendQuestion(ans.id, 2);
-});
-
-questionFour.addEventListener('click', () => {
-    const ans = document.getElementById("answer4");
-    ans.innerText = questionsArr[3].question;
-    sendQuestion(ans.id, 3);
-});
-
-questionFive.addEventListener('click', () => {
-    const ans = document.getElementById("answer5");
-    ans.innerText = questionsArr[4].question;
-    sendQuestion(ans.id, 4);
+questions.forEach((item, index) => {
+    item.children[0].addEventListener('click', () => {
+        handleQuestion(item.children[1], index);
+    });
 });
 
 // Set up questions
@@ -56,9 +30,11 @@ function sendQuestion(id, count) {
 }
 
 socket.on('qPressed', (id, count) => {
-    console.log(id, count);
     const ans = document.getElementById(id);
-
+    // Disable other questions until current is answered
+    questions.forEach(item => {
+        item.children[0].style.pointerEvents = "none";
+    });
     ans.innerText = questionsArr[count].question;
 });
 
@@ -73,8 +49,30 @@ answerBtn.addEventListener('click', () => {
 });
 
 socket.on('answerPressed', (id, count) => {
-    console.log(`answer pressed by user ${count}`);
-    if (socket.id === id) {
+    let userAnswering = socket.id === id;
+    handleAnswerDisplay(userAnswering, count);
+});
+
+answerSubmit.addEventListener('click', () => {
+    // Check text here?
+    socket.emit('userAnswer', answerText.value);    
+});
+
+socket.on('questionAnswered', (isCorrect, user) => {
+    if (socket.id === user.id) {
+        answerText.style.display = "none";
+        answerSubmit.style.display = "none";
+        answerNotPressed.innerText = `Your answer was ${isCorrect ? 'correct' : 'incorrect'}`;
+        answerNotPressed.style.display = "inline";
+    } else {
+        answerNotPressed.innerText = `User ${user.count} was ${isCorrect ? 'correct' : 'incorrect'}`;
+        answerNotPressed.style.display = "inline";
+    }
+    answerBtn.style.display = "inline";
+});
+
+function handleAnswerDisplay(userAnswering, count) {
+    if (userAnswering) {
         answerText.style.display = "inline";
         answerSubmit.style.display = "inline";
     } else {
@@ -82,15 +80,5 @@ socket.on('answerPressed', (id, count) => {
         answerNotPressed.style.display = "inline";
     }
     answerBtn.style.display = "none";
-    
-});
+}
 
-answerSubmit.addEventListener('click', () => {
-    
-});
-
-answerText.addEventListener('submit', () => { console.log('submitted')});
-
-socket.on('userAdded', msg => {
-    console.log(msg);
-})

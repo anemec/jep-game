@@ -1,33 +1,30 @@
 const fetch = require('node-fetch');
 
-// function getNewQ() {
-//     return fetch('https://jservice.io/api/random')
-//     .then(res => res.json())
-//     .then(data => { return data.question});
-// }
-
 function getNewQuestions() {
     // let questionsArr = [];
-    let urlRandom = 'https://jservice.io/api/random';
-    let urlCat = 'https://jservice.io/api/category?id=2155';
+    const url = 'https://jservice.io/api/';
+    const category = 'category?id=';
 
-    return fetch(urlCat)
+    let id = getRandomInt(10000);
+
+    let catUrl = url + category + id;
+
+
+    return fetch(catUrl)
     .then(response => {
-        return response.json()
+        return response.json();
     })
     .then(data => { 
-        // console.log(data);
         let questionsArr = [];
         for (var i = 0; i < 5; i++) {
             questionsArr[i] = data.clues[i];
         }
-        // console.log(questionsArr);
         return questionsArr;
-        // questionDiv.innerText = data[0].question;
     });
+}
 
-    // questionDiv.innerText = realData.question;
-    // return questionsArr;
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 module.exports = getNewQuestions

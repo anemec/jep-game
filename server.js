@@ -15,35 +15,40 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-// let questionArr = [];
+let questionsArr;
+let currentQuestion;
 
-io.on('connection', socket => {
+io.on('connection', async (socket) => {
+    if (!questionsArr) {
+        questionsArr = await getNewQuestions();
+    }
+    io.emit('qUpdate', questionsArr);
 
     const user = addUser(socket.id, "user");
 
     socket.emit('userAdded', `User added ${user.username}${user.count}`);
 
     socket.on('answer', msg => {
-        console.log(msg);
         io.emit('answerPressed', user.id, user.count);
     });
 
     socket.on('questionNumber', (id, count) => {
-        console.log(`id:${id} count:${count}`);
+        currentQuestion = questionsArr[count];
         io.emit('qPressed', id, count);
     });
 
+    socket.on('userAnswer', answer => {
+        let isAnswerCorrect = answer.toLowerCase() === currentQuestion.answer.toLowerCase();
+        io.emit('questionAnswered', isAnswerCorrect ? true : false, user);
+    });
+
     socket.on('getQuestions', async () => {
+        //is await needed?
         let arr = await getNewQuestions();
+        questionsArr = arr;
         io.emit('qUpdate', arr);
     });
 
 });
-
-// async function fetchQ() {
-//     let questionArr =  await getNewQuestions();
-//     io.emit('qUpdate', questionArr);
-// }
-
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
