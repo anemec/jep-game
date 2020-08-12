@@ -17,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let questionsArr;
 let currentQuestion;
+let limitSet = false;
 
 io.on('connection', async (socket) => {
     if (!questionsArr) {
@@ -30,16 +31,23 @@ io.on('connection', async (socket) => {
 
     socket.on('answer', msg => {
         io.emit('answerPressed', user.id, user.count);
+        if (!limitSet) {
+            limitSet = true;
+            setTimeout(() => {
+                io.emit('timeLimit');
+                limitSet = false;
+            }, 5000);
+        }
     });
 
-    socket.on('questionNumber', (id, count) => {
-        currentQuestion = questionsArr[count];
-        io.emit('qPressed', id, count);
+    socket.on('questionNumber', index => {
+        currentQuestion = questionsArr[index];
+        io.emit('qPressed', index);
     });
 
     socket.on('userAnswer', answer => {
         let isAnswerCorrect = answer.toLowerCase() === currentQuestion.answer.toLowerCase();
-        io.emit('questionAnswered', isAnswerCorrect ? true : false, user);
+        io.emit('questionAnswered', isAnswerCorrect ? true : false, user, answer.toLowerCase());
     });
 
     socket.on('getQuestions', async () => {

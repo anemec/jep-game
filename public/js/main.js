@@ -1,41 +1,40 @@
 const questionBtn = document.getElementById('newQ');
-const questions = document.querySelectorAll('.question-div');
+const questions = document.querySelectorAll('.question');
 const answerBtn = document.getElementById('answer');
 const answerText = document.getElementById('ansText');
 const answerSubmit = document.getElementById('answerSubmit');
 const answerNotPressed = document.getElementById('answerNotPressed');
+const questionText = document.getElementById("questionText");
 
 const socket = io();
 
 let questionsArr = [];
 // let questionsArr = ["This is an answer one", "This is an answer two", "This is an answer three", "This is an answer four", "This is an answer five"];
 
-function handleQuestion(item, index) {
-    sendQuestion(item.id, index);
-}
-
+// Setup click event for question boxes
 questions.forEach((item, index) => {
-    item.children[0].addEventListener('click', () => {
-        handleQuestion(item.children[1], index);
+    item.addEventListener('click', () => {
+        sendQuestion(index);
     });
 });
 
-// Set up questions
+// Setup questions for all users
 socket.on('qUpdate', msg => {
     questionsArr = msg;    
 });
 
-function sendQuestion(id, count) {
-    socket.emit('questionNumber', id, count);
+// Handle question selection
+function sendQuestion(index) {
+    socket.emit('questionNumber', index);
 }
 
-socket.on('qPressed', (id, count) => {
-    const ans = document.getElementById(id);
+socket.on('qPressed', index => {
+    // const ans = document.getElementById(id);
     // Disable other questions until current is answered
     questions.forEach(item => {
-        item.children[0].style.pointerEvents = "none";
+        item.style.pointerEvents = "none";
     });
-    ans.innerText = questionsArr[count].question;
+    questionText.innerText = questionsArr[index].question;
 });
 
 // TODO update to change all questions
@@ -58,17 +57,21 @@ answerSubmit.addEventListener('click', () => {
     socket.emit('userAnswer', answerText.value);    
 });
 
-socket.on('questionAnswered', (isCorrect, user) => {
+socket.on('questionAnswered', (isCorrect, user, answer) => {
     if (socket.id === user.id) {
         answerText.style.display = "none";
         answerSubmit.style.display = "none";
         answerNotPressed.innerText = `Your answer was ${isCorrect ? 'correct' : 'incorrect'}`;
         answerNotPressed.style.display = "inline";
     } else {
-        answerNotPressed.innerText = `User ${user.count} was ${isCorrect ? 'correct' : 'incorrect'}`;
+        answerNotPressed.innerText = `User ${user.count} was ${isCorrect ? 'correct' : 'incorrect'} with answer: ${answer}`;
         answerNotPressed.style.display = "inline";
+        answerBtn.style.display = "inline";
     }
-    answerBtn.style.display = "inline";
+});
+
+socket.on('timeLimit', () => {
+    resetDisplay();
 });
 
 function handleAnswerDisplay(userAnswering, count) {
@@ -80,5 +83,17 @@ function handleAnswerDisplay(userAnswering, count) {
         answerNotPressed.style.display = "inline";
     }
     answerBtn.style.display = "none";
+}
+
+function resetDisplay() {
+    answerBtn.style.display = "inline";
+    answerText.style.display = "none";
+    answerSubmit.style.display = "none";
+    answerNotPressed.style.display = "none";
+    questions.forEach(item => {
+        item.style.pointerEvents = "auto";
+    });
+    questionText.innerText = "";
+
 }
 

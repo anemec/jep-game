@@ -9,37 +9,57 @@
 </head>
 
 <body>
-    <h1 id="test">Jeopardy game</h1>
-    <div class="question-box">
-        <div class="question-div">
-            <div id="question1" class="question">100</div>
-            <div id="answer1" class="answerTextShow"></div>
+    <div class="container">
+        <h1 id="test">Jeopardy game</h1>
+        <div class="question-board">
+            <div class="question-box">
+                <div id="question1" class="question">100</div>
+                <div id="question2" class="question">200</div>
+                <div id="question3" class="question">400</div>
+                <div id="question4" class="question">800</div>
+                <div id="question5" class="question">1000</div>
+            </div>
+            <div class="question-box">
+                <div id="question1" class="question">100</div>
+                <div id="question2" class="question">200</div>
+                <div id="question3" class="question">400</div>
+                <div id="question4" class="question">800</div>
+                <div id="question5" class="question">1000</div>
+            </div>
+            <div class="question-box">
+                <div id="question1" class="question">100</div>
+                <div id="question2" class="question">200</div>
+                <div id="question3" class="question">400</div>
+                <div id="question4" class="question">800</div>
+                <div id="question5" class="question">1000</div>
+            </div>
+            <div class="question-box">
+                <div id="question1" class="question">100</div>
+                <div id="question2" class="question">200</div>
+                <div id="question3" class="question">400</div>
+                <div id="question4" class="question">800</div>
+                <div id="question5" class="question">1000</div>
+            </div>
+            <div class="question-box">
+                <div id="question1" class="question">100</div>
+                <div id="question2" class="question">200</div>
+                <div id="question3" class="question">400</div>
+                <div id="question4" class="question">800</div>
+                <div id="question5" class="question">1000</div>
+            </div>
         </div>
-        <div class="question-div">
-            <div id="question2" class="question">200</div>
-            <div id="answer2" class="answerTextShow"></div>
+        <div>
+            <p id="questionText" class="questionText"></p>
         </div>
-        <div class="question-div">
-            <div id="question3" class="question">400</div>
-            <div id="answer3" class="answerTextShow"></div>
+        <button id="answer" class="answer">Answer</button>
+        <div>
+            <input type="text" name="answerText" id="ansText" class="answerText">
+            <input type="button" value="Submit" id="answerSubmit" class="answerSubmit">
+            <div id="answerNotPressed" class="answerNP"></div>
         </div>
-        <div class="question-div">
-            <div id="question4" class="question">800</div>
-            <div id="answer4" class="answerTextShow"></div>
-        </div>
-        <div class="question-div">
-            <div id="question5" class="question">1000</div>
-            <div id="answer5" class="answerTextShow"></div>
-        </div>
+        <br>
+        <button id="newQ" class="newQ">Click me for new questions</button>
     </div>
-    <button id="answer" class="answer">Answer</button>
-    <div>
-        <input type="text" name="answerText" id="ansText" class="answerText">
-        <input type="button" value="Submit" id="answerSubmit" class="answerSubmit">
-        <div id="answerNotPressed" class="answerNP"></div>
-    </div>
-    <br>
-    <button id="newQ" class="newQ">Click me for new questions</button>
 
 </body>
 

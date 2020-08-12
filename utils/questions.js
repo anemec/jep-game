@@ -1,14 +1,22 @@
 const fetch = require('node-fetch');
 
-function getNewQuestions() {
-    // let questionsArr = [];
+async function getNewQuestions() {
+    let questionArray = [];
+
+    for(let i = 0; i < 5; i++) {
+        //Push could be used for a 2d array
+        questionArray = questionArray.concat(await populateColumn());
+    }
+    return questionArray;
+}
+
+function populateColumn() {
     const url = 'https://jservice.io/api/';
     const category = 'category?id=';
 
     let id = getRandomInt(10000);
 
     let catUrl = url + category + id;
-
 
     return fetch(catUrl)
     .then(response => {
